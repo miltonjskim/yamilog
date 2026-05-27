@@ -1,0 +1,70 @@
+# ── Gradle ──────────────────────────────────────────────────────────────────
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# ── IntelliJ IDEA ────────────────────────────────────────────────────────────
+# 대부분 무시하되 팀 공유 설정은 추적
+.idea/*
+!.idea/.gitignore
+!.idea/inspectionProfiles/
+!.idea/inspectionProfiles/**
+!.idea/runConfigurations/
+!.idea/runConfigurations/**
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# ── Spring Boot ──────────────────────────────────────────────────────────────
+application-local.yml
+application-secret.yml
+*.env
+.env
+.env.local
+
+# ── Compiled ────────────────────────────────────────────────────────────────
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# ── OS (Windows) ─────────────────────────────────────────────────────────────
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ── Node / Frontend ──────────────────────────────────────────────────────────
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env.local
+frontend/.env*.local
+
+# ── Docker ───────────────────────────────────────────────────────────────────
+docker/volumes/
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Test Output ──────────────────────────────────────────────────────────────
+**/test-results/
+**/jacoco/
+**/coverage/
+
+# ── Secrets ──────────────────────────────────────────────────────────────────
+*.pem
+*.key
+*.p12
+*.jks
+secrets/
+
+# ── Claude Code ──────────────────────────────────────────────────────────────
+.claude/settings.local.json
+.mcp.json
