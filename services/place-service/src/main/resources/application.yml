@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: place-service
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:yamilog_place}
+    username: ${DB_USER:yamilog}
+    password: ${DB_PASS:yamilog}
+    hikari:
+      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+server:
+  port: ${SERVER_PORT:8083}
+yamilog:
+  kakao:
+    api-key: ${KAKAO_API_KEY:local-dev-key}
+    local-search-url: https://dapi.kakao.com/v2/local
+  naver:
+    client-id: ${NAVER_CLIENT_ID:local-dev-id}
+    client-secret: ${NAVER_CLIENT_SECRET:local-dev-secret}
+    geocoding-url: https://naveropenapi.apigw.ntruss.com/map-geocode/v2
+  place:
+    duplicate-radius-meters: 50
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  metrics:
+    tags:
+      service: place-service
+logging:
+  level:
+    com.yamilog: INFO
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+logging:
+  level:
+    com.yamilog: DEBUG

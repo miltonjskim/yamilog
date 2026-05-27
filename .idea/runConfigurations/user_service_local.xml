@@ -1,0 +1,20 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="user-service [local]" type="SpringBootApplicationConfigurationType">
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.yamilog.userservice.UserServiceApplication" />
+    <module name="yamilog.services.user-service.main" />
+    <option name="VM_PARAMETERS" value="-Xmx512m -Dspring.profiles.active=local" />
+    <option name="PROGRAM_PARAMETERS" value="" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_WORKING_DIR$" />
+    <option name="ENABLE_LAUNCH_OPTIMIZATION" value="false" />
+    <envs>
+      <env name="SERVER_PORT" value="8081" />
+      <env name="DB_HOST" value="localhost" />
+      <env name="DB_NAME" value="yamilog_user" />
+      <env name="REDIS_HOST" value="localhost" />
+      <env name="KAFKA_SERVERS" value="localhost:9092" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

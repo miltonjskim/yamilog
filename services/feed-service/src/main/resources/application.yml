@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: feed-service
+  data:
+    mongodb:
+      uri: mongodb://${MONGO_USER:yamilog}:${MONGO_PASS:yamilog}@${MONGO_HOST:localhost}:${MONGO_PORT:27017}/${MONGO_DB:yamilog_feed}?authSource=admin
+      auto-index-creation: false
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  cache:
+    type: redis
+    redis:
+      time-to-live: 300000  # 5분 (피드 캐시)
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
+    consumer:
+      group-id: feed-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.yamilog.*"
+server:
+  port: ${SERVER_PORT:8085}
+yamilog:
+  feed:
+    follow-feed-size: 20
+    category-feed-popular-days: 7
+    category-feed-size: 30
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  metrics:
+    tags:
+      service: feed-service
+logging:
+  level:
+    com.yamilog: INFO
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  data:
+    mongodb:
+      auto-index-creation: true
+logging:
+  level:
+    com.yamilog: DEBUG

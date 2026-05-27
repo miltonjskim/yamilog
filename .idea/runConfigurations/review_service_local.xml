@@ -1,0 +1,20 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="review-service [local]" type="SpringBootApplicationConfigurationType">
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.yamilog.reviewservice.ReviewServiceApplication" />
+    <module name="yamilog.services.review-service.main" />
+    <option name="VM_PARAMETERS" value="-Xmx512m -Dspring.profiles.active=local" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_WORKING_DIR$" />
+    <envs>
+      <env name="SERVER_PORT" value="8084" />
+      <env name="MONGO_HOST" value="localhost" />
+      <env name="MONGO_DB" value="yamilog_review" />
+      <env name="REDIS_HOST" value="localhost" />
+      <env name="KAFKA_SERVERS" value="localhost:9092" />
+      <env name="AWS_REGION" value="ap-northeast-2" />
+      <env name="S3_BUCKET" value="yamilog-review-images-local" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
