@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: level-engine
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:yamilog_level}
+    username: ${DB_USER:yamilog}
+    password: ${DB_PASS:yamilog}
+    hikari:
+      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
+    consumer:
+      group-id: level-engine
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.yamilog.*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  batch:
+    job:
+      enabled: false  # 배치 자동 실행 비활성화 (스케줄러로 제어)
+    jdbc:
+      initialize-schema: always
+server:
+  port: ${SERVER_PORT:8086}
+yamilog:
+  level:
+    quality-score:
+      length-weight: 0.30
+      completeness-weight: 0.30
+      helpful-vote-weight: 0.40
+    downgrade:
+      warning-days: 90
+      downgrade-days: 180
+  batch:
+    cron: "0 0 3 * * *"  # 매일 새벽 3시
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  metrics:
+    tags:
+      service: level-engine
+logging:
+  level:
+    com.yamilog: INFO
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+logging:
+  level:
+    com.yamilog: DEBUG

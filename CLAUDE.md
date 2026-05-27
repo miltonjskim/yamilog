@@ -72,8 +72,11 @@ yamilog/
 
 > **이 구조를 절대 변경하지 말 것.** 새 서비스 추가 시 동일 구조를 따른다.
 
+> **패키지 루트 규칙**: `com.yamilog.{servicename}` — 서비스 디렉터리명에서 하이픈 제거
+> 예: `user-service` → `com.yamilog.userservice`, `level-engine` → `com.yamilog.levelengine`
+
 ```
-com.yamilog.{service}/
+com.yamilog.{servicename}/
 ├── domain/
 │   ├── model/          # 엔티티, 값 객체 (외부 의존성 0)
 │   └── event/          # 도메인 이벤트 정의
@@ -103,6 +106,7 @@ adapter/out  ←  application/port/out  ←  (구현)
 - `domain` 은 어떤 레이어도 의존하지 않는다.
 - `application` 은 `domain` 만 의존한다. Spring 어노테이션 최소화.
 - `adapter` 는 `application/port` 인터페이스만 호출한다. 구현체 직접 참조 금지.
+- `common-infra` 빈(`JwtProvider`, `GlobalExceptionHandler` 등)은 **Spring Boot AutoConfiguration**으로 자동 등록된다. 각 서비스에서 `@ComponentScan` 확장 불필요.
 
 ---
 

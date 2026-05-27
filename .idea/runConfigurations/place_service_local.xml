@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="place-service [local]" type="SpringBootApplicationConfigurationType">
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.yamilog.placeservice.PlaceServiceApplication" />
+    <module name="yamilog.services.place-service.main" />
+    <option name="VM_PARAMETERS" value="-Xmx512m -Dspring.profiles.active=local" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_WORKING_DIR$" />
+    <envs>
+      <env name="SERVER_PORT" value="8083" />
+      <env name="REDIS_HOST" value="localhost" />
+      <env name="KAFKA_SERVERS" value="localhost:9092" />
+    </envs>
+    <method v="2"><option name="Make" enabled="true" /></method>
+  </configuration>
+</component>
