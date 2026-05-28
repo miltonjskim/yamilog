@@ -20,6 +20,7 @@ val testcontainersVersion   = "1.20.3"
 val jwtVersion              = "0.12.6"
 val kafkaVersion            = "3.8.0"
 val resilience4jVersion     = "2.2.0"
+val archunitVersion         = "1.3.0"
 
 // ── All Projects 공통 설정 ─────────────────────────────────────────────────────
 allprojects {
@@ -55,6 +56,7 @@ subprojects {
             dependency("io.jsonwebtoken:jjwt-impl:$jwtVersion")
             dependency("io.jsonwebtoken:jjwt-jackson:$jwtVersion")
             dependency("io.github.resilience4j:resilience4j-spring-boot3:$resilience4jVersion")
+            dependency("com.tngtech.archunit:archunit-junit5:$archunitVersion")
         }
     }
 

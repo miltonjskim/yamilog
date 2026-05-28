@@ -6,5 +6,14 @@
  *
  * 루트 build.gradle.kts 에서 java, dependency-management, Lombok 전역 적용됨
  */
+plugins {
+    `java-test-fixtures`
+}
 
-// 추가 의존성 없음 — 루트 공통 설정(Lombok, JUnit 5)만 상속
+dependencies {
+    // testFixtures 소비 모듈이 archunit 을 별도 선언하지 않아도 되도록 api 로 노출
+    testFixturesApi("com.tngtech.archunit:archunit-junit5")
+
+    testFixturesCompileOnly("org.projectlombok:lombok")
+    testFixturesAnnotationProcessor("org.projectlombok:lombok")
+}
