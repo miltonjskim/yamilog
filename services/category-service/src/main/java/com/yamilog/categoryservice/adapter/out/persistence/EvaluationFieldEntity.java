@@ -22,7 +22,7 @@ public class EvaluationFieldEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_seq_id", nullable = false)
     private CategoryEntity category;
 
     @Column(name = "field_key", nullable = false, length = 50)

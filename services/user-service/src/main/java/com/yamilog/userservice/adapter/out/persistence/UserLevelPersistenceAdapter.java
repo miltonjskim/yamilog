@@ -17,7 +17,16 @@ class UserLevelPersistenceAdapter implements UserLevelRepository {
 
     @Override
     public UserLevel save(UserLevel userLevel) {
-        return mapper.levelToDomain(jpaRepository.save(mapper.levelToEntity(userLevel)));
+        UserLevelEntity entity = jpaRepository
+            .findByUserIdAndCategoryId(userLevel.getUserId(), userLevel.getCategoryId())
+            .map(existing -> {
+                existing.setManiaLevel(userLevel.getManiaLevel().getValue());
+                existing.setQualityScore(userLevel.getQualityScore());
+                existing.setReviewCount(userLevel.getReviewCount());
+                return existing;
+            })
+            .orElseGet(() -> mapper.levelToEntity(userLevel));
+        return mapper.levelToDomain(jpaRepository.save(entity));
     }
 
     @Override

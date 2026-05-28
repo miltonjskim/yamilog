@@ -54,7 +54,7 @@ public class CategoryService implements
         validateFields(command.fields());
 
         Category category = Category.builder()
-            .categoryId("cat_" + UUID.randomUUID().toString().replace("-", "").substring(0, 12))
+            .categoryId(UUID.randomUUID().toString())
             .name(command.name())
             .description(command.description())
             .iconUrl(command.iconUrl())

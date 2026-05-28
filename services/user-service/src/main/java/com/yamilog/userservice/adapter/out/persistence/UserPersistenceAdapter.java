@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -17,12 +18,22 @@ class UserPersistenceAdapter implements UserRepository {
 
     @Override
     public User save(User user) {
-        return mapper.toDomain(jpaRepository.save(mapper.toEntity(user)));
+        UserEntity entity = jpaRepository.findByPublicId(UUID.fromString(user.getUserId()))
+            .map(existing -> {
+                existing.setNickname(user.getNickname());
+                existing.setPasswordHash(user.getPasswordHash());
+                existing.setProfileImage(user.getProfileImage());
+                existing.setFollowersCount(user.getFollowersCount());
+                existing.setFollowingCount(user.getFollowingCount());
+                return existing;
+            })
+            .orElseGet(() -> mapper.toEntity(user));
+        return mapper.toDomain(jpaRepository.save(entity));
     }
 
     @Override
     public Optional<User> findById(String userId) {
-        return jpaRepository.findById(userId).map(mapper::toDomain);
+        return jpaRepository.findByPublicId(UUID.fromString(userId)).map(mapper::toDomain);
     }
 
     @Override

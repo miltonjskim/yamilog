@@ -8,9 +8,15 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
-@Table(name = "categories")
+@Table(name = "categories",
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uk_categories_public_id", columnNames = "id"),
+        @UniqueConstraint(name = "uk_categories_name", columnNames = "name")
+    }
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,10 +25,14 @@ import java.util.List;
 public class CategoryEntity {
 
     @Id
-    @Column(name = "id", length = 20)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "seq_id", updatable = false)
+    private Long seqId;
 
-    @Column(name = "name", nullable = false, unique = true, length = 50)
+    @Column(name = "id", columnDefinition = "uuid", nullable = false, updatable = false)
+    private UUID publicId;
+
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
     @Column(name = "description", length = 200)
