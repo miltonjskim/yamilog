@@ -556,7 +556,7 @@ record CursorPageResponse<T>(
 | common-infra | ✅ | - | - | ✅ | 완료 |
 | gateway | - | ⬜ | ⬜ | ⬜ | 미시작 |
 | user-service | ✅ | ✅ | ✅ | ✅ | 완료 |
-| category-service | ⬜ | ⬜ | ⬜ | ⬜ | 미시작 |
+| category-service | ✅ | ✅ | ✅ | ✅ | 완료 |
 | place-service | ⬜ | ⬜ | ⬜ | ⬜ | 미시작 |
 | review-service | ⬜ | ⬜ | ⬜ | ⬜ | 미시작 |
 | feed-service | ⬜ | ⬜ | ⬜ | ⬜ | 미시작 |

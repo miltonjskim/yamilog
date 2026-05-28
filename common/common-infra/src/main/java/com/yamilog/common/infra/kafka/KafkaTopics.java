@@ -16,4 +16,7 @@ public final class KafkaTopics {
 
     // user-service 발행
     public static final String USER_FOLLOWED  = "yamilog.user.followed";
+
+    // category-service 발행
+    public static final String CATEGORY_SCHEMA_UPDATED = "yamilog.category.schema-updated";
 }
