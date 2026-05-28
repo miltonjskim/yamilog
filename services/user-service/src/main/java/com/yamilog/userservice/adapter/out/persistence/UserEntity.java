@@ -7,10 +7,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users",
     uniqueConstraints = {
+        @UniqueConstraint(name = "uk_users_public_id", columnNames = "id"),
         @UniqueConstraint(name = "uk_users_email", columnNames = "email"),
         @UniqueConstraint(name = "uk_users_nickname", columnNames = "nickname"),
         @UniqueConstraint(name = "uk_users_provider", columnNames = {"provider_type", "provider_id"})
@@ -24,8 +26,12 @@ import java.time.LocalDateTime;
 public class UserEntity {
 
     @Id
-    @Column(name = "id", length = 32)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "seq_id", updatable = false)
+    private Long seqId;
+
+    @Column(name = "id", columnDefinition = "uuid", nullable = false, updatable = false)
+    private UUID publicId;
 
     @Column(name = "nickname", nullable = false, length = 20)
     private String nickname;

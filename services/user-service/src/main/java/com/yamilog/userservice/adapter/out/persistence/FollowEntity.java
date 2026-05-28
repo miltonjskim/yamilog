@@ -4,12 +4,15 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "follows")
-@IdClass(FollowEntity.FollowId.class)
+@Table(name = "follows",
+    uniqueConstraints = @UniqueConstraint(
+        name = "uk_follows_follower_followee",
+        columnNames = {"follower_id", "followee_id"}
+    )
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,20 +21,17 @@ import java.time.LocalDateTime;
 public class FollowEntity {
 
     @Id
-    @Column(name = "follower_id", nullable = false, length = 32)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "seq_id", updatable = false)
+    private Long seqId;
+
+    @Column(name = "follower_id", nullable = false, length = 36)
     private String followerId;
 
-    @Id
-    @Column(name = "followee_id", nullable = false, length = 32)
+    @Column(name = "followee_id", nullable = false, length = 36)
     private String followeeId;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
-    @lombok.Value
-    public static class FollowId implements Serializable {
-        String followerId;
-        String followeeId;
-    }
 }

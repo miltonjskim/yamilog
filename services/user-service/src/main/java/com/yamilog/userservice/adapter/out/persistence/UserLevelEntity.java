@@ -21,10 +21,11 @@ import java.time.LocalDateTime;
 public class UserLevelEntity {
 
     @Id
-    @Column(name = "id", length = 36)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "seq_id", updatable = false)
+    private Long seqId;
 
-    @Column(name = "user_id", nullable = false, length = 32)
+    @Column(name = "user_id", nullable = false, length = 36)
     private String userId;
 
     @Column(name = "category_id", nullable = false, length = 36)

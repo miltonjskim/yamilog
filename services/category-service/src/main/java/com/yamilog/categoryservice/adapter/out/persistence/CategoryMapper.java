@@ -5,14 +5,14 @@ import com.yamilog.categoryservice.domain.model.EvaluationField;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", imports = java.util.UUID.class)
 interface CategoryMapper {
 
-    @Mapping(target = "categoryId", source = "id")
-    @Mapping(target = "active", source = "active")
+    @Mapping(target = "categoryId", expression = "java(entity.getPublicId().toString())")
     Category toDomain(CategoryEntity entity);
 
-    @Mapping(target = "id", source = "categoryId")
+    @Mapping(target = "publicId", expression = "java(UUID.fromString(category.getCategoryId()))")
+    @Mapping(target = "seqId", ignore = true)
     @Mapping(target = "fields", ignore = true)
     CategoryEntity toEntity(Category category);
 

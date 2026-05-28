@@ -46,7 +46,7 @@ public class UserService implements RegisterUserUseCase, GetUserProfileUseCase {
             : null;
 
         User user = User.builder()
-            .userId("usr_" + UUID.randomUUID().toString().replace("-", "").substring(0, 12))
+            .userId(UUID.randomUUID().toString())
             .email(command.email())
             .nickname(command.nickname())
             .passwordHash(passwordHash)

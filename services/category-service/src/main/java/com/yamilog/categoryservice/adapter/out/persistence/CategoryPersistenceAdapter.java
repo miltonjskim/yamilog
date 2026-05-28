@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -17,22 +18,27 @@ class CategoryPersistenceAdapter implements CategoryRepository {
 
     @Override
     public Category save(Category category) {
-        CategoryEntity entity = mapper.toEntity(category);
-        List<EvaluationFieldEntity> fieldEntities = category.getFields().stream()
-            .map(f -> {
-                EvaluationFieldEntity fe = mapper.fieldToEntity(f);
-                fe.setCategory(entity);
-                return fe;
+        CategoryEntity entity = jpaRepository.findByPublicId(UUID.fromString(category.getCategoryId()))
+            .map(existing -> {
+                existing.setName(category.getName());
+                existing.setDescription(category.getDescription());
+                existing.setIconUrl(category.getIconUrl());
+                existing.setActive(category.isActive());
+                existing.getFields().clear();
+                existing.getFields().addAll(buildFieldEntities(category, existing));
+                return existing;
             })
-            .toList();
-        entity.getFields().clear();
-        entity.getFields().addAll(fieldEntities);
+            .orElseGet(() -> {
+                CategoryEntity newEntity = mapper.toEntity(category);
+                newEntity.getFields().addAll(buildFieldEntities(category, newEntity));
+                return newEntity;
+            });
         return mapper.toDomain(jpaRepository.save(entity));
     }
 
     @Override
     public Optional<Category> findById(String categoryId) {
-        return jpaRepository.findById(categoryId).map(mapper::toDomain);
+        return jpaRepository.findByPublicId(UUID.fromString(categoryId)).map(mapper::toDomain);
     }
 
     @Override
@@ -45,5 +51,15 @@ class CategoryPersistenceAdapter implements CategoryRepository {
     @Override
     public boolean existsByName(String name) {
         return jpaRepository.existsByName(name);
+    }
+
+    private List<EvaluationFieldEntity> buildFieldEntities(Category category, CategoryEntity parent) {
+        return category.getFields().stream()
+            .map(f -> {
+                EvaluationFieldEntity fe = mapper.fieldToEntity(f);
+                fe.setCategory(parent);
+                return fe;
+            })
+            .toList();
     }
 }
