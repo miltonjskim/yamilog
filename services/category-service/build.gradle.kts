@@ -28,11 +28,18 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-cache")
 
+    // ── Security ─────────────────────────────────────────────────────────────
+    implementation("org.springframework.boot:spring-boot-starter-security")
+
+    // ── Kafka (이벤트 발행) ───────────────────────────────────────────────────
+    implementation("org.springframework.kafka:spring-kafka")
+
     // ── MapStruct ─────────────────────────────────────────────────────────────
     implementation("org.mapstruct:mapstruct")
     annotationProcessor("org.mapstruct:mapstruct-processor")
 
     // ── Test ──────────────────────────────────────────────────────────────────
+    testImplementation(testFixtures(project(":common:common-domain")))
     testImplementation("org.testcontainers:postgresql")
     testImplementation("com.h2database:h2")
 }

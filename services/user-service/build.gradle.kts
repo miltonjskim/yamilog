@@ -39,6 +39,7 @@ dependencies {
     annotationProcessor("org.mapstruct:mapstruct-processor")
 
     // ── Test ──────────────────────────────────────────────────────────────────
+    testImplementation(testFixtures(project(":common:common-domain"))) // HexagonalArchRules + ArchUnit
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.testcontainers:kafka")
     testImplementation("org.springframework.kafka:spring-kafka-test")

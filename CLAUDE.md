@@ -197,11 +197,38 @@ public record ReviewCreatedEvent(
 
 | 계층 | 종류 | 도구 |
 |------|------|------|
+| 아키텍처 규칙 | 아키텍처 테스트 | ArchUnit (`HexagonalArchitectureTest`) |
 | Domain | 단위 테스트 | JUnit 5, 외부 의존성 0 |
 | Application Service | 단위 테스트 | JUnit 5 + Mockito |
 | Adapter/in/web | 슬라이스 테스트 | `@WebMvcTest` |
 | Adapter/out/persistence | 슬라이스 테스트 | `@DataJpaTest`, `@DataMongoTest` |
 | 통합 테스트 | Testcontainers | PostgreSQL/MongoDB/Redis/Kafka 실 컨테이너 |
+
+### ArchUnit 아키텍처 테스트
+
+각 서비스는 `arch/HexagonalArchitectureTest.java` 를 반드시 포함해야 한다.
+규칙 정의는 `common-domain` testFixtures 의 `HexagonalArchRules` 에서 중앙 관리한다.
+
+```java
+// 새 서비스 추가 시 ROOT 패키지만 교체
+@AnalyzeClasses(packages = HexagonalArchitectureTest.ROOT)
+class HexagonalArchitectureTest {
+    static final String ROOT = "com.yamilog.{servicename}";
+
+    @ArchTest static final ArchRule domainNotDependOnAdapter =
+        HexagonalArchRules.domainShouldNotDependOnAdapter(ROOT);
+    // ... (나머지 규칙 동일)
+}
+```
+
+적용 규칙:
+- `domain` → `adapter` 의존 금지
+- `domain` → `application` 의존 금지
+- `application` → `adapter` 의존 금지
+- `adapter.in` → `adapter.out` 직접 의존 금지
+- `domain.model` → Spring 어노테이션 금지
+- `domain.model` → JPA 어노테이션 금지 (`@Entity` 는 `*Entity` 클래스에만)
+- `application` → Servlet API 금지
 
 ### 테스트 명명 규칙
 ```java
@@ -305,6 +332,10 @@ docker compose -f docker/docker-compose.local.yml up -d postgres mongodb redis k
 8. Web Adapter 구현         (adapter/in/web/)
 9. 단위 테스트 작성
 10. 통합 테스트 작성
+
+신규 서비스 추가 시 추가 필수 작업:
+- build.gradle.kts 에 testImplementation(testFixtures(project(":common:common-domain"))) 추가
+- src/test/.../arch/HexagonalArchitectureTest.java 작성 (ROOT 패키지만 교체)
 ```
 
 ### Claude Code 슬래시 커맨드
@@ -525,7 +556,7 @@ record CursorPageResponse<T>(
 | common-infra | ✅ | - | - | ✅ | 완료 |
 | gateway | - | ⬜ | ⬜ | ⬜ | 미시작 |
 | user-service | ✅ | ✅ | ✅ | ✅ | 완료 |
-| category-service | ⬜ | ⬜ | ⬜ | ⬜ | 미시작 |
+| category-service | ✅ | ✅ | ✅ | ✅ | 완료 |
 | place-service | ⬜ | ⬜ | ⬜ | ⬜ | 미시작 |
 | review-service | ⬜ | ⬜ | ⬜ | ⬜ | 미시작 |
 | feed-service | ⬜ | ⬜ | ⬜ | ⬜ | 미시작 |
